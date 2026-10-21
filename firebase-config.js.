@@ -1,0 +1,20 @@
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCm9Vw3QjJSKFuiIiq0_wBwcJ9NP_j-5lc",
+  authDomain: "nexus-panol-eest4-v3.firebaseapp.com",
+  projectId: "nexus-panol-eest4-v3",
+  storageBucket: "nexus-panol-eest4-v3.firebasestorage.app",
+  messagingSenderId: "318049102188",
+  appId: "1:318049102188:web:1adf368005aaf2d8f92b49",
+  measurementId: "G-DSHKX0M7CZ"
+};
+
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+export const db = getFirestore(app);

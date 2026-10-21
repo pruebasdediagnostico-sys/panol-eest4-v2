@@ -1,0 +1,2074 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081321">
+<title>PAÑOL E.E.S.T. N.º 4 | NEXUS AI</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #081321;
+  --panel: #101f32;
+  --panel2: #142840;
+  --border: #263e58;
+  --text: #edf6ff;
+  --muted: #91a9c2;
+  --cyan: #28d7e9;
+  --blue: #4285ff;
+  --green: #45dda0;
+  --orange: #ffbd69;
+  --red: #ff707e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.topbar {
+  min-height: 76px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #0d1b2c;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #153650;
+  font-size: 25px;
+}
+
+.brand h1 { font-size: 17px; margin: 0; }
+.brand p { color: var(--muted); font-size: 12px; margin: 4px 0 0; }
+
+.top-status {
+  color: var(--green);
+  font-size: 12px;
+  padding: 8px 11px;
+  border: 1px solid #286c59;
+  background: #102c2a;
+  border-radius: 20px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  min-height: calc(100vh - 76px);
+}
+
+.sidebar {
+  padding: 18px 12px;
+  background: #0b1929;
+  border-right: 1px solid var(--border);
+}
+
+.nav-label {
+  color: #718ba5;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  padding: 12px 10px;
+}
+
+.nav-btn {
+  width: 100%;
+  border: 1px solid transparent;
+  color: #b6c9dc;
+  background: transparent;
+  border-radius: 11px;
+  padding: 12px;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  color: var(--cyan);
+  background: #132a40;
+  border-color: #234b65;
+}
+
+.content {
+  min-width: 0;
+  padding: 24px;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.page-heading h2 { margin: 0; font-size: 25px; }
+.page-heading p { color: var(--muted); margin: 7px 0 0; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-width: 0;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 750;
+  margin-bottom: 16px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 650;
+  color: var(--text);
+  background: var(--panel2);
+}
+
+.btn:hover { filter: brightness(1.18); }
+
+.btn-primary {
+  color: #04151d;
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.btn-secondary { background: #152a40; }
+
+.toolbar {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 20px;
+  padding: 7px 10px;
+  background: #243247;
+  color: #c6d5e7;
+}
+
+.status-online {
+  background: #10372e;
+  color: var(--green);
+}
+
+.status-offline {
+  background: #3b202a;
+  color: #ff9ca6;
+}
+
+.status-unknown {
+  background: #2d2a20;
+  color: var(--orange);
+}
+
+.muted { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(250px, .7fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #132d46, #101f32 75%);
+  border: 1px solid #28516d;
+  border-radius: 20px;
+  padding: 26px;
+  overflow: hidden;
+}
+
+.welcome-card h2 { font-size: 28px; margin: 0 0 12px; }
+.welcome-card p { color: #b5cce1; line-height: 1.7; }
+
+.robot-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  background: radial-gradient(ellipse, #153d57 0%, #10243a 52%, transparent 75%);
+}
+
+.robot {
+  position: relative;
+  width: 130px;
+  height: 140px;
+  animation: robot-float 3s ease-in-out infinite;
+}
+
+.robot-head {
+  position: absolute;
+  width: 112px;
+  height: 100px;
+  top: 25px;
+  left: 9px;
+  border-radius: 32px 32px 28px 28px;
+  background: linear-gradient(145deg, #f4fcff, #9cb9d1);
+  box-shadow: 0 0 35px #25cde855, inset -7px -7px 12px #617c99;
+  border: 3px solid #e0f7ff;
+}
+
+.robot-head::before, .robot-head::after {
+  content: "";
+  position: absolute;
+  top: 36px;
+  width: 9px;
+  height: 28px;
+  border-radius: 7px;
+  background: #6c94b5;
+}
+
+.robot-head::before { left: -8px; }
+.robot-head::after { right: -8px; }
+
+.robot-face {
+  position: absolute;
+  inset: 13px 10px;
+  border-radius: 23px;
+  background: #10283e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+  box-shadow: inset 0 0 14px #20cde822;
+}
+
+.robot-eye {
+  width: 12px;
+  height: 17px;
+  border-radius: 50%;
+  background: #44f0ff;
+  box-shadow: 0 0 12px #44f0ff;
+  animation: robot-blink 5s infinite;
+}
+
+.robot-mouth {
+  position: absolute;
+  bottom: 11px;
+  left: 50%;
+  width: 22px;
+  height: 7px;
+  transform: translateX(-50%);
+  border-bottom: 3px solid #44f0ff;
+  border-radius: 50%;
+}
+
+.robot-antenna {
+  position: absolute;
+  width: 5px;
+  height: 25px;
+  background: #9cb9d1;
+  left: 62px;
+  top: 1px;
+  border-radius: 5px;
+}
+
+.robot-antenna::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 18px var(--cyan);
+  animation: antenna-pulse 1.5s infinite alternate;
+}
+
+@keyframes robot-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes antenna-pulse {
+  from { opacity: .65; transform: scale(.85); }
+  to { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes robot-blink {
+  0%, 44%, 48%, 100% { transform: scaleY(1); }
+  46% { transform: scaleY(.12); }
+}
+
+.quick-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 17px;
+}
+
+.quick-card h3 { font-size: 15px; margin: 0 0 8px; }
+.quick-card p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+.device-card, .component-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #0c1a2a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.device-icon, .component-icon { font-size: 27px; }
+.device-info, .component-info { flex: 1; min-width: 0; }
+.device-info h3 { margin: 0 0 5px; }
+.device-info p, .component-info small { color: var(--muted); font-size: 12px; }
+
+.diagnostic-log {
+  background: #07111e;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  max-height: 240px;
+  overflow: auto;
+  color: #a9c6de;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.nexus-chat-panel { overflow: hidden; }
+
+.nexus-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.robot-small { transform: scale(.72); transform-origin: center; width: 100px; height: 110px; flex-shrink: 0; }
+.nexus-chat-header h2 { margin: 0 0 5px; }
+.nexus-chat-header p { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+
+.nexus-intro {
+  background: #132a40;
+  border: 1px solid #244b65;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.nexus-intro p { color: #b9cee0; margin-bottom: 0; line-height: 1.6; }
+
+.nexus-quick-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.nexus-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 120px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+.nexus-message {
+  max-width: 88%;
+  padding: 12px 14px;
+  border-radius: 13px;
+  line-height: 1.6;
+}
+
+.nexus-message p { margin: 5px 0 0; white-space: pre-wrap; }
+.nexus-bot-message { background: #142b40; border: 1px solid #294a63; align-self: flex-start; }
+.nexus-user-message { background: #123d4b; border: 1px solid #207187; align-self: flex-end; }
+
+.nexus-chat-form { display: flex; gap: 9px; margin-top: 12px; }
+.nexus-chat-form input, .field input, .field select, .field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  color: var(--text);
+  background: #091726;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--cyan); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field label { font-size: 13px; color: #bdd0e3; }
+
+.table-wrap { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 500px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+th { color: #a8c4dc; background: #14263a; }
+
+.footer {
+  color: #66829e;
+  font-size: 11px;
+  text-align: center;
+  padding: 24px 0 10px;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 9px;
+  }
+  .nav-label { display: none; }
+  .nav-btn { width: auto; white-space: nowrap; margin: 0; }
+  .content { padding: 16px; }
+}
+
+@media (max-width: 620px) {
+  .topbar { padding: 12px; }
+  .top-status { display: none; }
+  .welcome-grid, .grid-2, .grid-3, .form-grid { grid-template-columns: 1fr; }
+  .welcome-card { padding: 19px; }
+  .welcome-card h2 { font-size: 23px; }
+  .panel { padding: 15px; }
+  .nexus-chat-form { flex-direction: column; }
+  .nexus-chat-form .btn { width: 100%; }
+  .component-row { flex-wrap: wrap; }
+  .component-row .status-pill { margin-left: auto; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🔧</div>
+    <div>
+      <h1>PAÑOL E.E.S.T. N.º 4</h1>
+      <p>Sistema técnico de gestión · NEXUS AI</p>
+    </div>
+  </div>
+  <span class="top-status">● SISTEMA LOCAL</span>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="nav-label">MENÚ PRINCIPAL</div>
+    <button class="nav-btn active" data-view="inicio">🏠 Inicio</button>
+    <button class="nav-btn" data-view="alumnos">👨‍🎓 Alumnos</button>
+    <button class="nav-btn" data-view="profesores">👨‍🏫 Profesores</button>
+    <button class="nav-btn" data-view="herramientas">🔧 Herramientas</button>
+    <button class="nav-btn" data-view="prestamos">📤 Préstamos</button>
+    <button class="nav-btn" data-view="devoluciones">📥 Devoluciones</button>
+    <button class="nav-btn" data-view="historial">📋 Historial</button>
+    <button class="nav-btn" data-view="diagnostico">⚙️ Diagnóstico técnico</button>
+    <button class="nav-btn" data-view="administracion">🛠️ Administración</button>
+  </aside>
+
+  <main class="content">
+
+    <section class="view active" id="view-inicio">
+      <div class="page-heading">
+        <div>
+          <h2>Panel del pañol</h2>
+          <p>Gestión técnica de herramientas y componentes.</p>
+        </div>
+        <span class="status-pill status-unknown">● ESPERANDO VERIFICACIÓN</span>
+      </div>
+
+      <div class="welcome-grid">
+        <div class="welcome-card">
+          <span class="status-pill status-online">🤖 ASISTENTE NEXUS</span>
+          <h2 id="nexusGreeting">¡Hola! Soy Nexus 👋</h2>
+          <p id="nexusWelcomeText">Soy tu compañero del pañol. Puedo ayudarte a usar el sistema, encontrar herramientas y organizar los controles de mantenimiento.</p>
+          <button class="btn btn-primary" type="button" data-goto="nexusAssistant">Hablar con Nexus →</button>
+        </div>
+
+        <div class="robot-stage" aria-label="Nexus, robot animado">
+          <div class="robot">
+            <div class="robot-antenna"></div>
+            <div class="robot-head">
+              <div class="robot-face">
+                <span class="robot-eye"></span>
+                <span class="robot-eye"></span>
+                <span class="robot-mouth"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:20px">
+        <div class="panel-title">🔌 Estado de los sistemas</div>
+        <div class="grid-3">
+          <div class="quick-card">
+            <h3>⚙️ Arduino Uno</h3>
+            <p id="homeBoardStatus">Conexión sin verificar.</p>
+          </div>
+          <div class="quick-card">
+            <h3>📡 Lector RFID</h3>
+            <p id="homeRfidStatus">Sin verificar.</p>
+          </div>
+          <div class="quick-card">
+            <h3>☁️ Firebase</h3>
+            <p id="homeFirebaseStatus">Sin verificar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">🚀 Accesos rápidos</div>
+        <div class="toolbar">
+          <button class="btn btn-secondary" data-goto="herramientas">🔧 Ver herramientas</button>
+          <button class="btn btn-secondary" data-goto="prestamos">📤 Registrar préstamo</button>
+          <button class="btn btn-secondary" data-goto="devoluciones">📥 Registrar devolución</button>
+          <button class="btn btn-secondary" data-goto="diagnostico">⚙️ Diagnóstico</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📋 Movimientos recientes</div>
+        <div id="recentMovements" class="muted">Todavía no hay movimientos registrados.</div>
+      </div>
+    </section>
+
+    <!-- CONTINUAR CON LA PARTE 2 AQUÍ -->
+
+<!-- ========== PARTE 2: DIAGNÓSTICO TÉCNICO ========== -->
+
+<section class="view" id="view-diagnostico">
+  <div class="page-heading">
+    <div>
+      <h2>🔧 Diagnóstico técnico</h2>
+      <p>Estado de conexión y comprobación de componentes.</p>
+    </div>
+    <span class="status-pill status-unknown" id="diagnosticOverall">● SIN VERIFICAR</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🖥️ Comunicación con la placa</div>
+    <div class="device-card">
+      <div class="device-icon">⚙️</div>
+      <div class="device-info">
+        <h3>Arduino Uno</h3>
+        <p id="boardConnectionText">No se ha comprobado una conexión real.</p>
+        <span class="status-pill status-offline" id="boardConnectionStatus">● DESCONECTADA</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnConnectBoard" type="button">Conectar placa</button>
+      <button class="btn btn-secondary" id="btnPingBoard" type="button">Comprobar respuesta</button>
+      <button class="btn btn-secondary" id="btnDisconnectBoard" type="button">Desconectar</button>
+    </div>
+    <p class="muted">La conexión solo se considerará confirmada cuando exista comunicación válida con el firmware. La disponibilidad USB depende del navegador y del dispositivo.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🧩 Componentes del circuito</div>
+
+    <div class="component-row">
+      <span class="component-icon">📡</span>
+      <div class="component-info">
+        <strong>Lector RFID RC522</strong>
+        <small>Lectura de tarjetas y etiquetas.</small>
+      </div>
+      <span class="status-pill status-unknown" id="rfidDiagnosticStatus">● SIN VERIFICAR</span>
+    </div>
+
+    <div class="component-row">
+      <span class="component-icon">🔢</span>
+      <div class="component-info">
+        <strong>Teclado matricial 4×4</strong>
+        <small>Entrada de comandos y selección.</small>
+      </div>
+      <span class="status-pill status-unknown" id="keypadDiagnosticStatus">● SIN VERIFICAR</span>
+    </div>
+
+    <div class="component-row">
+      <span class="component-icon">🖥️</span>
+      <div class="component-info">
+        <strong>Pantalla OLED</strong>
+        <small>Salida visual del sistema.</small>
+      </div>
+      <span class="status-pill status-unknown" id="oledDiagnosticStatus">● SIN VERIFICAR</span>
+    </div>
+
+    <p class="muted">La conexión de la placa no demuestra por sí sola que cada componente funcione. Cada componente necesita una prueba específica.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 Registro técnico</div>
+    <div id="diagnosticLog" class="diagnostic-log" aria-live="polite">
+      <p>Esperando una prueba de diagnóstico...</p>
+    </div>
+    <button class="btn btn-secondary" id="btnClearDiagnosticLog" type="button">Limpiar registro visual</button>
+  </div>
+</section>
+
+<!-- ========== ASISTENTE NEXUS AI ========== -->
+
+<section class="panel nexus-chat-panel" id="nexusAssistant">
+  <div class="nexus-chat-header">
+    <div class="robot robot-small" aria-label="Robot Nexus animado">
+      <div class="robot-antenna"></div>
+      <div class="robot-head">
+        <div class="robot-face">
+          <span class="robot-eye"></span>
+          <span class="robot-eye"></span>
+          <span class="robot-mouth"></span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>NEXUS AI</h2>
+      <p>Tu asistente del pañol · Siempre a tu lado</p>
+      <span class="status-pill status-online" id="nexusChatStatus">● ASISTENTE DISPONIBLE</span>
+    </div>
+  </div>
+
+  <div class="nexus-intro">
+    <strong>¡Hola! Soy Nexus 👋</strong>
+    <p>Puedo orientarte por el sistema, explicarte cada sección y ayudarte con el inventario, los préstamos y las devoluciones.</p>
+  </div>
+
+  <div class="nexus-quick-actions">
+    <button class="btn btn-secondary" type="button" data-nexus-prompt="¿Cómo registro una herramienta?">🔧 Herramientas</button>
+    <button class="btn btn-secondary" type="button" data-nexus-prompt="¿Cómo hago un préstamo?">📤 Préstamos</button>
+    <button class="btn btn-secondary" type="button" data-nexus-prompt="¿Cómo registro una reparación?">🛠️ Reparaciones</button>
+    <button class="btn btn-secondary" type="button" data-nexus-prompt="¿Cómo hago el recuento mensual?">📅 Recuento mensual</button>
+    <button class="btn btn-secondary" type="button" data-nexus-prompt="¿Cómo reviso el Arduino?">⚙️ Diagnóstico</button>
+  </div>
+
+  <div class="nexus-messages" id="nexusChatMessages" aria-live="polite">
+    <div class="nexus-message nexus-bot-message">
+      <strong>🤖 Nexus</strong>
+      <p>¡Bienvenido al pañol! Elegí una consulta o escribime qué necesitás. Te voy a guiar paso a paso.</p>
+    </div>
+  </div>
+
+  <form id="nexusChatForm" class="nexus-chat-form">
+    <input id="nexusChatInput" name="consulta" type="text" placeholder="Escribí tu consulta..." autocomplete="off" required>
+    <button class="btn btn-primary" type="submit">Enviar ➤</button>
+  </form>
+
+  <p class="muted">Esta primera versión utilizará ayuda guiada local. La integración de una IA externa se hará después mediante un servicio seguro.</p>
+</section>
+
+<!-- ========== FIN PARTE 2 ========== -->
+
+<!-- ========== PARTE 3: ALUMNOS Y PROFESORES ========== -->
+
+<section class="view" id="view-alumnos">
+  <div class="page-heading">
+    <div>
+      <h2>👨‍🎓 Gestión de alumnos</h2>
+      <p>Registro de alumnos habilitados para operar en el pañol.</p>
+    </div>
+    <span class="status-pill status-unknown" id="alumnosCount">0 alumnos</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">➕ Registrar alumno</div>
+
+    <form id="formAlumno">
+      <div class="form-grid">
+        <div class="field">
+          <label for="alumnoNombre">Nombre</label>
+          <input id="alumnoNombre" name="nombre" type="text" placeholder="Nombre del alumno" required>
+        </div>
+
+        <div class="field">
+          <label for="alumnoApellido">Apellido</label>
+          <input id="alumnoApellido" name="apellido" type="text" placeholder="Apellido del alumno" required>
+        </div>
+
+        <div class="field">
+          <label for="alumnoCurso">Curso y división</label>
+          <input id="alumnoCurso" name="curso" type="text" placeholder="Ej.: 4.º 2.ª" required>
+        </div>
+
+        <div class="field">
+          <label for="alumnoContacto">Contacto (opcional)</label>
+          <input id="alumnoContacto" name="contacto" type="text" placeholder="Dato de contacto autorizado">
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" type="submit">Guardar alumno</button>
+        <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 Alumnos registrados</div>
+
+    <div class="toolbar">
+      <input id="buscarAlumno" type="search" placeholder="Buscar por nombre, apellido o curso..." aria-label="Buscar alumno">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre y apellido</th>
+            <th>Curso</th>
+            <th>Contacto</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaAlumnos">
+          <tr>
+            <td colspan="4">Todavía no hay alumnos registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="view-profesores">
+  <div class="page-heading">
+    <div>
+      <h2>👨‍🏫 Gestión de profesores</h2>
+      <p>Registro de docentes autorizados para gestionar movimientos.</p>
+    </div>
+    <span class="status-pill status-unknown" id="profesoresCount">0 profesores</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">➕ Registrar profesor</div>
+
+    <form id="formProfesor">
+      <div class="form-grid">
+        <div class="field">
+          <label for="profesorNombre">Nombre</label>
+          <input id="profesorNombre" name="nombre" type="text" placeholder="Nombre del profesor" required>
+        </div>
+
+        <div class="field">
+          <label for="profesorApellido">Apellido</label>
+          <input id="profesorApellido" name="apellido" type="text" placeholder="Apellido del profesor" required>
+        </div>
+
+        <div class="field">
+          <label for="profesorArea">Área o especialidad</label>
+          <input id="profesorArea" name="area" type="text" placeholder="Ej.: Electrónica" required>
+        </div>
+
+        <div class="field">
+          <label for="profesorContacto">Contacto (opcional)</label>
+          <input id="profesorContacto" name="contacto" type="text" placeholder="Contacto institucional">
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" type="submit">Guardar profesor</button>
+        <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 Profesores registrados</div>
+
+    <div class="toolbar">
+      <input id="buscarProfesor" type="search" placeholder="Buscar por nombre, apellido o área..." aria-label="Buscar profesor">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre y apellido</th>
+            <th>Área</th>
+            <th>Contacto</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaProfesores">
+          <tr>
+            <td colspan="4">Todavía no hay profesores registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FIN PARTE 3 ========== -->
+
+<!-- ========== PARTE 4: INVENTARIO DE HERRAMIENTAS ========== -->
+
+<section class="view" id="view-herramientas">
+  <div class="page-heading">
+    <div>
+      <h2>🔧 Inventario de herramientas</h2>
+      <p>Control de existencias, funcionamiento, ubicación y mantenimiento.</p>
+    </div>
+    <span class="status-pill status-unknown" id="herramientasCount">0 herramientas</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">➕ Registrar herramienta</div>
+
+    <form id="formHerramienta">
+      <div class="form-grid">
+        <div class="field">
+          <label for="herramientaNombre">Nombre de la herramienta</label>
+          <input id="herramientaNombre" name="nombre" type="text" placeholder="Ej.: Multímetro digital" required>
+        </div>
+
+        <div class="field">
+          <label for="herramientaCategoria">Categoría</label>
+          <select id="herramientaCategoria" name="categoria" required>
+            <option value="">Seleccionar categoría</option>
+            <option>Herramientas manuales</option>
+            <option>Herramientas eléctricas</option>
+            <option>Medición</option>
+            <option>Electrónica</option>
+            <option>Seguridad</option>
+            <option>Componentes</option>
+            <option>Otros</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="herramientaCantidad">Cantidad total</label>
+          <input id="herramientaCantidad" name="cantidad" type="number" min="1" step="1" value="1" required>
+        </div>
+
+        <div class="field">
+          <label for="herramientaUbicacion">Ubicación física</label>
+          <input id="herramientaUbicacion" name="ubicacion" type="text" placeholder="Ej.: Armario 2, estante B" required>
+        </div>
+
+        <div class="field">
+          <label for="herramientaEstado">Estado de funcionamiento</label>
+          <select id="herramientaEstado" name="estado" required>
+            <option value="Operativa">✅ Operativa</option>
+            <option value="Necesita reparación">🟠 Necesita reparación</option>
+            <option value="En reparación">🛠️ En reparación</option>
+            <option value="Fuera de servicio">⛔ Fuera de servicio</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="herramientaObservaciones">Observaciones</label>
+          <textarea id="herramientaObservaciones" name="observaciones" rows="2" placeholder="Detalles, fallas o mantenimiento pendiente"></textarea>
+        </div>
+      </div>
+
+      <p class="muted">El código será asignado automáticamente al guardar. El primer código disponible será el 10.</p>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" type="submit">➕ Registrar herramienta</button>
+        <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📦 Existencias y estado</div>
+
+    <div class="toolbar">
+      <input id="buscarHerramienta" type="search" placeholder="Buscar por código o nombre..." aria-label="Buscar herramienta">
+
+      <select id="filtroEstadoHerramienta" aria-label="Filtrar por estado">
+        <option value="">Todos los estados</option>
+        <option value="Operativa">Operativas</option>
+        <option value="Necesita reparación">Necesitan reparación</option>
+        <option value="En reparación">En reparación</option>
+        <option value="Fuera de servicio">Fuera de servicio</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Herramienta</th>
+            <th>Categoría</th>
+            <th>Total</th>
+            <th>Disponibles</th>
+            <th>Estado</th>
+            <th>Ubicación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaHerramientas">
+          <tr>
+            <td colspan="8">Todavía no hay herramientas registradas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🛠️ Control de mantenimiento</div>
+    <p class="muted">Registrá las herramientas que necesitan revisión, reparación o que quedaron fuera de servicio. En el recuento periódico se compararán las existencias físicas con las registradas.</p>
+
+    <div class="grid-2">
+      <div class="quick-card">
+        <h3>🟠 Requieren atención</h3>
+        <p id="herramientasReparacion">Todavía no hay datos de mantenimiento.</p>
+      </div>
+
+      <div class="quick-card">
+        <h3>📅 Próximo recuento</h3>
+        <p id="proximoRecuentoHerramientas">El recordatorio de 30 días se activará en la integración de JavaScript.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FIN PARTE 4 ========== -->
+
+<!-- ========== PARTE 5: PRÉSTAMOS Y DEVOLUCIONES ========== -->
+
+<section class="view" id="view-prestamos">
+  <div class="page-heading">
+    <div>
+      <h2>📤 Registrar préstamo</h2>
+      <p>Entrega de una o varias herramientas en una misma operación.</p>
+    </div>
+    <span class="status-pill status-unknown">REGISTRO DE SALIDA</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🧑‍🎓 Datos del préstamo</div>
+
+    <form id="formPrestamo">
+      <div class="form-grid">
+        <div class="field">
+          <label for="prestamoPersonaTipo">Tipo de persona</label>
+          <select id="prestamoPersonaTipo" name="tipoPersona" required>
+            <option value="alumno">Alumno</option>
+            <option value="profesor">Profesor</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="prestamoPersona">Persona responsable</label>
+          <select id="prestamoPersona" name="persona" required>
+            <option value="">Primero registrá alumnos o profesores</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="prestamoFecha">Fecha de entrega</label>
+          <input id="prestamoFecha" name="fecha" type="date" required>
+        </div>
+
+        <div class="field">
+          <label for="prestamoResponsable">Docente o encargado que entrega</label>
+          <input id="prestamoResponsable" name="responsable" type="text" placeholder="Nombre del responsable" required>
+        </div>
+
+        <div class="field">
+          <label for="prestamoObservaciones">Observaciones</label>
+          <textarea id="prestamoObservaciones" name="observaciones" rows="2" placeholder="Destino, actividad o comentarios"></textarea>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:20px;background:#0b1929">
+        <div class="panel-title">🔧 Herramientas que se entregan</div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="prestamoHerramienta">Herramienta</label>
+            <select id="prestamoHerramienta" name="herramienta">
+              <option value="">Seleccionar herramienta</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="prestamoCantidad">Cantidad</label>
+            <input id="prestamoCantidad" name="cantidad" type="number" min="1" step="1" value="1">
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn btn-secondary" id="btnAgregarHerramientaPrestamo" type="button">➕ Agregar al préstamo</button>
+        </div>
+
+        <div class="table-wrap" style="margin-top:15px">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Herramienta</th>
+                <th>Cantidad</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaCarritoPrestamo">
+              <tr>
+                <td colspan="4">Todavía no agregaste herramientas.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" type="submit">📤 Confirmar préstamo</button>
+        <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
+      </div>
+
+      <p class="muted">La entrega deberá validar existencias y disponibilidad antes de confirmar. El movimiento quedará registrado en el historial.</p>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📦 Préstamos pendientes</div>
+
+    <div class="toolbar">
+      <input id="buscarPrestamo" type="search" placeholder="Buscar por persona o número de préstamo..." aria-label="Buscar préstamo">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>N.º préstamo</th>
+            <th>Persona</th>
+            <th>Fecha</th>
+            <th>Herramientas pendientes</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tablaPrestamosPendientes">
+          <tr>
+            <td colspan="5">Todavía no hay préstamos registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="view-devoluciones">
+  <div class="page-heading">
+    <div>
+      <h2>📥 Devoluciones</h2>
+      <p>Devolución completa o parcial de herramientas prestadas.</p>
+    </div>
+    <span class="status-pill status-unknown">REGISTRO DE ENTRADA</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔎 Seleccionar préstamo pendiente</div>
+
+    <div class="field">
+      <label for="devolucionPrestamo">Préstamo</label>
+      <select id="devolucionPrestamo" name="prestamo">
+        <option value="">Seleccionar préstamo pendiente</option>
+      </select>
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label for="devolucionResponsable">Persona que recibe la devolución</label>
+      <input id="devolucionResponsable" type="text" placeholder="Nombre del pañolero o responsable">
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label for="devolucionObservaciones">Observaciones</label>
+      <textarea id="devolucionObservaciones" rows="2" placeholder="Daños, piezas faltantes u otras novedades"></textarea>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🧰 Cantidades que regresan</div>
+
+    <p class="muted">Se mostrará cada herramienta pendiente del préstamo seleccionado. Podrás devolver una parte y dejar el resto pendiente.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Herramienta</th>
+            <th>Prestadas pendientes</th>
+            <th>Devueltas ahora</th>
+            <th>Estado al regresar</th>
+          </tr>
+        </thead>
+        <tbody id="tablaDetalleDevolucion">
+          <tr>
+            <td colspan="5">Seleccioná un préstamo para ver su detalle.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnConfirmarDevolucion" type="button">📥 Confirmar devolución</button>
+      <button class="btn btn-secondary" id="btnDevolverTodo" type="button">Devolver todas las cantidades pendientes</button>
+    </div>
+
+    <p class="muted">Las herramientas que regresen dañadas deberán registrarse para reparación y no volverán a figurar como disponibles para préstamo hasta que corresponda.</p>
+  </div>
+</section>
+
+<!-- ========== FIN PARTE 5 ========== -->
+
+<!-- ========== PARTE 6: HISTORIAL Y ADMINISTRACIÓN ========== -->
+
+<section class="view" id="view-historial">
+  <div class="page-heading">
+    <div>
+      <h2>📋 Historial de movimientos</h2>
+      <p>Consulta de préstamos, devoluciones, recuentos y mantenimiento.</p>
+    </div>
+    <span class="status-pill status-unknown" id="historialCount">0 movimientos</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔎 Buscar movimientos</div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="buscarHistorial">Buscar por persona, herramienta o código</label>
+        <input id="buscarHistorial" type="search" placeholder="Escribí para buscar...">
+      </div>
+
+      <div class="field">
+        <label for="filtroTipoHistorial">Tipo de movimiento</label>
+        <select id="filtroTipoHistorial">
+          <option value="">Todos los movimientos</option>
+          <option value="Préstamo">Préstamos</option>
+          <option value="Devolución">Devoluciones</option>
+          <option value="Reparación">Reparaciones</option>
+          <option value="Recuento">Recuentos de inventario</option>
+          <option value="Ajuste">Ajustes de inventario</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="historialDesde">Desde</label>
+        <input id="historialDesde" type="date">
+      </div>
+
+      <div class="field">
+        <label for="historialHasta">Hasta</label>
+        <input id="historialHasta" type="date">
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-secondary" id="btnLimpiarFiltrosHistorial" type="button">Limpiar filtros</button>
+      <button class="btn btn-secondary" id="btnExportarHistorial" type="button">📄 Exportar historial CSV</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📑 Registro cronológico</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Tipo</th>
+            <th>Persona</th>
+            <th>Detalle</th>
+            <th>Responsable</th>
+            <th>Observaciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaHistorial">
+          <tr>
+            <td colspan="6">Todavía no hay movimientos registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="view-administracion">
+  <div class="page-heading">
+    <div>
+      <h2>🛠️ Administración del sistema</h2>
+      <p>Configuración, copias de seguridad y control periódico del inventario.</p>
+    </div>
+    <span class="status-pill status-unknown" id="adminSystemStatus">● PENDIENTE DE CONFIGURACIÓN</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📅 Recuento físico cada 30 días</div>
+
+    <p class="muted">Iniciá una revisión periódica para comparar las cantidades registradas con las herramientas que realmente están en el pañol.</p>
+
+    <div class="grid-2">
+      <div class="quick-card">
+        <h3>🗓️ Último recuento</h3>
+        <p id="ultimoRecuento">Todavía no hay ningún recuento registrado.</p>
+      </div>
+
+      <div class="quick-card">
+        <h3>⏰ Próxima revisión</h3>
+        <p id="fechaProximoRecuento">Se calculará al registrar el primer recuento.</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnIniciarRecuento" type="button">🔍 Iniciar recuento físico</button>
+      <button class="btn btn-secondary" id="btnRegistrarRecuento" type="button">✅ Registrar revisión realizada</button>
+    </div>
+
+    <div id="recuentoPanel" hidden>
+      <div class="panel-title" style="margin-top:20px">📦 Comparación de existencias</div>
+
+      <p class="muted">Ingresá la cantidad física que contaste de cada herramienta. El sistema deberá comparar ese valor con las existencias registradas.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Herramienta</th>
+              <th>Cantidad registrada</th>
+              <th>Cantidad física</th>
+              <th>Estado de revisión</th>
+            </tr>
+          </thead>
+          <tbody id="tablaRecuento">
+            <tr>
+              <td colspan="5">El recuento todavía no se ha iniciado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🛠️ Control de reparaciones</div>
+
+    <div class="field">
+      <label for="mantenimientoHerramienta">Herramienta</label>
+      <select id="mantenimientoHerramienta">
+        <option value="">Seleccionar herramienta</option>
+      </select>
+    </div>
+
+    <div class="form-grid" style="margin-top:15px">
+      <div class="field">
+        <label for="mantenimientoEstado">Nuevo estado</label>
+        <select id="mantenimientoEstado">
+          <option value="Operativa">Operativa</option>
+          <option value="Necesita reparación">Necesita reparación</option>
+          <option value="En reparación">En reparación</option>
+          <option value="Fuera de servicio">Fuera de servicio</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="mantenimientoResponsable">Responsable</label>
+        <input id="mantenimientoResponsable" type="text" placeholder="Quién realizó la revisión">
+      </div>
+
+      <div class="field">
+        <label for="mantenimientoDetalle">Falla, trabajo realizado u observaciones</label>
+        <textarea id="mantenimientoDetalle" rows="3" placeholder="Describí el problema o la reparación"></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnGuardarMantenimiento" type="button">Guardar mantenimiento</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">💾 Copias de seguridad</div>
+
+    <p class="muted">Permitirá exportar los datos para conservar una copia independiente. Las copias deberán probarse antes de considerarse una recuperación válida.</p>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnExportarBackup" type="button">⬇️ Exportar copia JSON</button>
+      <button class="btn btn-secondary" id="btnImportarBackup" type="button">⬆️ Seleccionar copia para importar</button>
+      <input id="archivoBackup" type="file" accept=".json,application/json" hidden>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">☁️ Estado de Firebase</div>
+    <p id="firebaseAdminStatus" class="muted">La conexión con Firebase todavía debe verificarse.</p>
+    <p class="muted">No se indicará que hay sincronización hasta confirmar la conexión y las operaciones de lectura o escritura.</p>
+  </div>
+</section>
+
+<!-- ========== FIN PARTE 6 ========== -->
+
+<!-- =========================================
+     PARTE 7A — NEXUS Y NAVEGACIÓN
+     PAÑOL E.E.S.T. N.º 4
+========================================= -->
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  // Evitar inicializar el sistema dos veces.
+  if (window.PANOL_V2_INICIADO) return;
+  window.PANOL_V2_INICIADO = true;
+
+  // Estado local inicial del sistema.
+  const db = window.PANOL_DB = window.PANOL_DB || {
+    alumnos: [],
+    profesores: [],
+    herramientas: [],
+    prestamos: [],
+    historial: [],
+    mantenimientos: [],
+    recuentos: [],
+    siguienteHerramienta: 10,
+    siguienteMovimiento: 1,
+    ultimoRecuento: null
+  };
+
+  // Guardar datos en el navegador cuando sea posible.
+  const CLAVE = "panol_eest4_nexus_v2";
+
+  function guardarDatos() {
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(db));
+    } catch (error) {
+      console.warn("No se pudieron guardar los datos localmente.", error);
+    }
+  }
+
+  function cargarDatos() {
+    try {
+      const guardado = localStorage.getItem(CLAVE);
+      if (!guardado) return;
+
+      const datos = JSON.parse(guardado);
+      if (!datos || typeof datos !== "object") return;
+
+      [
+        "alumnos",
+        "profesores",
+        "herramientas",
+        "prestamos",
+        "historial",
+        "mantenimientos",
+        "recuentos"
+      ].forEach(clave => {
+        if (Array.isArray(datos[clave])) db[clave] = datos[clave];
+      });
+
+      if (Number.isFinite(datos.siguienteHerramienta)) {
+        db.siguienteHerramienta = datos.siguienteHerramienta;
+      }
+
+      if (Number.isFinite(datos.siguienteMovimiento)) {
+        db.siguienteMovimiento = datos.siguienteMovimiento;
+      }
+
+      db.ultimoRecuento = datos.ultimoRecuento || null;
+    } catch (error) {
+      console.warn("No se pudieron recuperar los datos guardados.", error);
+    }
+  }
+
+  cargarDatos();
+
+  // Utilidades generales.
+  function escapar(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[caracter]);
+  }
+
+  function fechaActual() {
+    return new Date().toLocaleDateString("es-AR");
+  }
+
+  function fechaHoraActual() {
+    return new Date().toLocaleString("es-AR");
+  }
+
+  function registrarHistorial(tipo, detalle) {
+    db.historial.unshift({
+      id: db.siguienteMovimiento++,
+      fecha: new Date().toISOString(),
+      tipo,
+      detalle
+    });
+
+    guardarDatos();
+  }
+
+  function avisar(mensaje) {
+    window.alert(mensaje);
+  }
+
+  // Navegación entre secciones.
+  function abrirVista(nombre) {
+    document.querySelectorAll(".view").forEach(vista => {
+      vista.classList.toggle("active", vista.id === "view-" + nombre);
+    });
+
+    document.querySelectorAll(".nav-btn[data-view]").forEach(boton => {
+      boton.classList.toggle("active", boton.dataset.view === nombre);
+    });
+
+    const destino = $("view-" + nombre);
+    if (destino) {
+      destino.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }
+
+  document.querySelectorAll(".nav-btn[data-view]").forEach(boton => {
+    boton.addEventListener("click", () => {
+      abrirVista(boton.dataset.view);
+    });
+  });
+
+  document.querySelectorAll("[data-goto]").forEach(boton => {
+    boton.addEventListener("click", () => {
+      abrirVista(boton.dataset.goto);
+    });
+  });
+
+  // Nexus: bienvenida visible, sin preguntas personales.
+  function mostrarBienvenidaNexus() {
+    const panel = $("nexusChatMessages");
+    if (!panel || panel.dataset.bienvenidaMostrada === "si") return;
+
+    panel.dataset.bienvenidaMostrada = "si";
+
+    const mensaje = document.createElement("div");
+    mensaje.className = "nexus-bot-message";
+    mensaje.innerHTML =
+      '<strong>💙 BIENVENIDA/O DE NUEVO, AMIGA/O</strong>' +
+      '<p>Soy Nexus, tu asistente del Pañol E.E.S.T. N.º 4.</p>' +
+      '<p>Estoy acá para ayudarte con el sistema y sus herramientas.</p>';
+
+    panel.appendChild(mensaje);
+  }
+
+  // Actualizar indicadores generales sin inventar conexiones.
+  function actualizarEstadoGeneral() {
+    const totalAlumnos = $("alumnosCount");
+    const totalProfesores = $("profesoresCount");
+    const totalHerramientas = $("herramientasCount");
+
+    if (totalAlumnos) {
+      totalAlumnos.textContent = db.alumnos.length;
+    }
+
+    if (totalProfesores) {
+      totalProfesores.textContent = db.profesores.length;
+    }
+
+    if (totalHerramientas) {
+      totalHerramientas.textContent = db.herramientas.length;
+    }
+
+    const estadoFirebase = $("firebaseAdminStatus");
+    if (estadoFirebase) {
+      estadoFirebase.textContent =
+        "Sin verificación de conexión desde este módulo";
+    }
+
+    const estadoPlaca = $("boardConnectionText");
+    if (estadoPlaca && !window.PANOL_PLACA_VERIFICADA) {
+      estadoPlaca.textContent = "Placa no verificada";
+    }
+  }
+
+  // Exponer utilidades para las siguientes partes.
+  window.PANOL_UTILS = {
+    $,
+    db,
+    escapar,
+    fechaActual,
+    fechaHoraActual,
+    guardarDatos,
+    registrarHistorial,
+    actualizarEstadoGeneral,
+    abrirVista,
+    avisar
+  };
+
+  // Inicio seguro.
+  function iniciarParte7A() {
+    mostrarBienvenidaNexus();
+    actualizarEstadoGeneral();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarParte7A, {
+      once: true
+    });
+  } else {
+    iniciarParte7A();
+  }
+})();
+</script>
+
+<!-- FIN PARTE 7A -->
+
+<!-- =========================================
+     PARTE 7B — GESTIÓN Y MANTENIMIENTO
+     PAÑOL E.E.S.T. N.º 4
+========================================= -->
+
+<script>
+(() => {
+  "use strict";
+
+  const U = window.PANOL_UTILS;
+  if (!U) {
+    console.error("No se encontró la Parte 7A.");
+    return;
+  }
+
+  const { $, db, escapar, guardarDatos, registrarHistorial,
+          actualizarEstadoGeneral, avisar } = U;
+
+  function valor(id) {
+    return $(id) ? $(id).value.trim() : "";
+  }
+
+  function conectarFormulario(id, callback) {
+    const formulario = $(id);
+    if (!formulario || formulario.dataset.conectado) return;
+    formulario.dataset.conectado = "si";
+    formulario.addEventListener("submit", evento => {
+      evento.preventDefault();
+      callback();
+    });
+  }
+
+  function pintarTabla(id, filas, columnas) {
+    const tabla = $(id);
+    if (!tabla) return;
+
+    tabla.innerHTML = filas.length
+      ? filas.map(item =>
+          "<tr>" + columnas.map(columna =>
+            "<td>" + escapar(columna(item)) + "</td>"
+          ).join("") + "</tr>"
+        ).join("")
+      : '<tr><td colspan="8">No hay registros para mostrar.</td></tr>';
+  }
+
+  // ALUMNOS
+  function renderAlumnos() {
+    const busqueda = valor("buscarAlumno").toLowerCase();
+    const filas = db.alumnos.filter(a =>
+      (a.nombre + " " + a.apellido + " " + a.curso)
+        .toLowerCase().includes(busqueda)
+    );
+
+    pintarTabla("tablaAlumnos", filas, [
+      a => a.nombre,
+      a => a.apellido,
+      a => a.curso,
+      a => a.contacto || "—"
+    ]);
+
+    if ($("alumnosCount")) $("alumnosCount").textContent = db.alumnos.length;
+  }
+
+  conectarFormulario("formAlumno", () => {
+    const nombre = valor("alumnoNombre");
+    const apellido = valor("alumnoApellido");
+    const curso = valor("alumnoCurso");
+
+    if (!nombre || !apellido || !curso) {
+      avisar("Completá nombre, apellido y curso.");
+      return;
+    }
+
+    db.alumnos.push({
+      id: Date.now(),
+      nombre,
+      apellido,
+      curso,
+      contacto: valor("alumnoContacto")
+    });
+
+    registrarHistorial("Alumno", "Alta de " + nombre + " " + apellido);
+    guardarDatos();
+    $("formAlumno").reset();
+    renderAlumnos();
+    actualizarEstadoGeneral();
+  });
+
+  if ($("buscarAlumno")) $("buscarAlumno").addEventListener("input", renderAlumnos);
+
+  // PROFESORES
+  function renderProfesores() {
+    const busqueda = valor("buscarProfesor").toLowerCase();
+    const filas = db.profesores.filter(p =>
+      (p.nombre + " " + p.apellido + " " + p.area)
+        .toLowerCase().includes(busqueda)
+    );
+
+    pintarTabla("tablaProfesores", filas, [
+      p => p.nombre,
+      p => p.apellido,
+      p => p.area || "—",
+      p => p.contacto || "—"
+    ]);
+
+    if ($("profesoresCount")) {
+      $("profesoresCount").textContent = db.profesores.length;
+    }
+  }
+
+  conectarFormulario("formProfesor", () => {
+    const nombre = valor("profesorNombre");
+    const apellido = valor("profesorApellido");
+
+    if (!nombre || !apellido) {
+      avisar("Completá nombre y apellido.");
+      return;
+    }
+
+    db.profesores.push({
+      id: Date.now(),
+      nombre,
+      apellido,
+      area: valor("profesorArea"),
+      contacto: valor("profesorContacto")
+    });
+
+    registrarHistorial("Profesor", "Alta de " + nombre + " " + apellido);
+    guardarDatos();
+    $("formProfesor").reset();
+    renderProfesores();
+    actualizarEstadoGeneral();
+  });
+
+  if ($("buscarProfesor")) {
+    $("buscarProfesor").addEventListener("input", renderProfesores);
+  }
+
+  // HERRAMIENTAS
+  function renderHerramientas() {
+    const busqueda = valor("buscarHerramienta").toLowerCase();
+    const filtro = valor("filtroEstadoHerramienta");
+
+    const filas = db.herramientas.filter(h => {
+      const texto = (h.nombre + " " + h.categoria + " " + h.ubicacion)
+        .toLowerCase();
+
+      return texto.includes(busqueda) && (!filtro || h.estado === filtro);
+    });
+
+    pintarTabla("tablaHerramientas", filas, [
+      h => h.codigo,
+      h => h.nombre,
+      h => h.categoria,
+      h => h.cantidad,
+      h => h.ubicacion,
+      h => h.estado
+    ]);
+
+    if ($("herramientasCount")) {
+      $("herramientasCount").textContent = db.herramientas.length;
+    }
+
+    if ($("herramientasReparacion")) {
+      $("herramientasReparacion").textContent =
+        db.herramientas.filter(h =>
+          h.estado === "Necesita reparación" ||
+          h.estado === "En reparación"
+        ).length;
+    }
+  }
+
+  conectarFormulario("formHerramienta", () => {
+    const nombre = valor("herramientaNombre");
+    const cantidad = Number(valor("herramientaCantidad"));
+
+    if (!nombre || !Number.isInteger(cantidad) || cantidad < 1) {
+      avisar("Ingresá un nombre y una cantidad válida mayor que cero.");
+      return;
+    }
+
+    const herramienta = {
+      codigo: db.siguienteHerramienta++,
+      nombre,
+      categoria: valor("herramientaCategoria"),
+      cantidad,
+      ubicacion: valor("herramientaUbicacion"),
+      estado: valor("herramientaEstado") || "Operativa",
+      observaciones: valor("herramientaObservaciones")
+    };
+
+    db.herramientas.push(herramienta);
+    registrarHistorial("Herramienta", "Alta de " + nombre +
+      " (código " + herramienta.codigo + ")");
+
+    guardarDatos();
+    $("formHerramienta").reset();
+    renderHerramientas();
+    actualizarEstadoGeneral();
+  });
+
+  if ($("buscarHerramienta")) {
+    $("buscarHerramienta").addEventListener("input", renderHerramientas);
+  }
+
+  if ($("filtroEstadoHerramienta")) {
+    $("filtroEstadoHerramienta").addEventListener("change", renderHerramientas);
+  }
+
+  // HISTORIAL
+  function renderHistorial() {
+    const busqueda = valor("buscarHistorial").toLowerCase();
+    const tipo = valor("filtroTipoHistorial");
+    const desde = valor("historialDesde");
+    const hasta = valor("historialHasta");
+
+    const filas = db.historial.filter(item => {
+      const fecha = item.fecha.slice(0, 10);
+      return (item.detalle + " " + item.tipo).toLowerCase().includes(busqueda)
+        && (!tipo || item.tipo === tipo)
+        && (!desde || fecha >= desde)
+        && (!hasta || fecha <= hasta);
+    });
+
+    pintarTabla("tablaHistorial", filas, [
+      h => new Date(h.fecha).toLocaleString("es-AR"),
+      h => h.tipo,
+      h => h.detalle
+    ]);
+
+    if ($("historialCount")) {
+      $("historialCount").textContent = filas.length;
+    }
+  }
+
+  ["buscarHistorial", "filtroTipoHistorial",
+   "historialDesde", "historialHasta"].forEach(id => {
+    if ($(id)) $(id).addEventListener("input", renderHistorial);
+    if ($(id)) $(id).addEventListener("change", renderHistorial);
+  });
+
+  if ($("btnLimpiarFiltrosHistorial")) {
+    $("btnLimpiarFiltrosHistorial").addEventListener("click", () => {
+      ["buscarHistorial", "filtroTipoHistorial",
+       "historialDesde", "historialHasta"].forEach(id => {
+        if ($(id)) $(id).value = "";
+      });
+      renderHistorial();
+    });
+  }
+
+  if ($("btnExportarHistorial")) {
+    $("btnExportarHistorial").addEventListener("click", () => {
+      descargar("historial-panol.csv",
+        "Fecha;Tipo;Detalle\n" + db.historial.map(h =>
+          [new Date(h.fecha).toLocaleString("es-AR"), h.tipo, h.detalle]
+            .map(v => '"' + String(v).replace(/"/g, '""') + '"')
+            .join(";")
+        ).join("\n"),
+        "text/csv;charset=utf-8");
+    });
+  }
+
+  // MANTENIMIENTO
+  function renderSelectHerramientas() {
+    ["mantenimientoHerramienta", "prestamoHerramienta"].forEach(id => {
+      const select = $(id);
+      if (!select) return;
+
+      const seleccionado = select.value;
+      select.innerHTML = '<option value="">Seleccionar herramienta</option>' +
+        db.herramientas.map(h =>
+          '<option value="' + escapar(h.codigo) + '">' +
+          escapar(h.codigo + " — " + h.nombre) + '</option>'
+        ).join("");
+
+      if (seleccionado) select.value = seleccionado;
+    });
+  }
+
+  conectarFormulario("formMantenimiento", () => {
+    const codigo = Number(valor("mantenimientoHerramienta"));
+    const herramienta = db.herramientas.find(h => h.codigo === codigo);
+
+    if (!herramienta) {
+      avisar("Seleccioná una herramienta válida.");
+      return;
+    }
+
+    herramienta.estado = valor("mantenimientoEstado") || herramienta.estado;
+    herramienta.observaciones = valor("mantenimientoDetalle");
+
+    db.mantenimientos.push({
+      fecha: new Date().toISOString(),
+      codigo,
+      herramienta: herramienta.nombre,
+      estado: herramienta.estado,
+      responsable: valor("mantenimientoResponsable"),
+      detalle: valor("mantenimientoDetalle")
+    });
+
+    registrarHistorial("Mantenimiento",
+      herramienta.nombre + ": " + herramienta.estado);
+
+    guardarDatos();
+    renderHerramientas();
+    actualizarEstadoGeneral();
+    avisar("Mantenimiento registrado correctamente.");
+  });
+
+  if ($("btnGuardarMantenimiento")) {
+    $("btnGuardarMantenimiento").addEventListener("click", evento => {
+      const formulario = $("formMantenimiento");
+      if (formulario) {
+        evento.preventDefault();
+        formulario.requestSubmit();
+      } else {
+        const codigo = Number(valor("mantenimientoHerramienta"));
+        const herramienta = db.herramientas.find(h => h.codigo === codigo);
+
+        if (!herramienta) {
+          avisar("Seleccioná una herramienta válida.");
+          return;
+        }
+
+        herramienta.estado = valor("mantenimientoEstado") || herramienta.estado;
+        herramienta.observaciones = valor("mantenimientoDetalle");
+
+        registrarHistorial("Mantenimiento",
+          herramienta.nombre + ": " + herramienta.estado);
+
+        guardarDatos();
+        renderHerramientas();
+        avisar("Mantenimiento registrado.");
+      }
+    });
+  }
+
+  // EXPORTACIÓN E IMPORTACIÓN DE RESPALDOS
+  function descargar(nombre, contenido, tipo) {
+    const archivo = new Blob([contenido], { type: tipo });
+    const url = URL.createObjectURL(archivo);
+    const enlace = document.createElement("a");
+
+    enlace.href = url;
+    enlace.download = nombre;
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  if ($("btnExportarBackup")) {
+    $("btnExportarBackup").addEventListener("click", () => {
+      descargar(
+        "respaldo-panol-" + new Date().toISOString().slice(0, 10) + ".json",
+        JSON.stringify(db, null, 2),
+        "application/json"
+      );
+    });
+  }
+
+  if ($("btnImportarBackup") && $("archivoBackup")) {
+    $("btnImportarBackup").addEventListener("click", () => {
+      $("archivoBackup").click();
+    });
+
+    $("archivoBackup").addEventListener("change", async evento => {
+      const archivo = evento.target.files[0];
+      if (!archivo) return;
+
+      try {
+        const datos = JSON.parse(await archivo.text());
+
+        const listas = [
+          "alumnos", "profesores", "herramientas",
+          "prestamos", "historial", "mantenimientos", "recuentos"
+        ];
+
+        if (!datos || !listas.every(clave => Array.isArray(datos[clave]))) {
+          throw new Error("El archivo no tiene el formato esperado.");
+        }
+
+        if (!confirm("¿Importar el respaldo? Se reemplazarán los datos locales actuales.")) {
+          evento.target.value = "";
+          return;
+        }
+
+        listas.forEach(clave => db[clave] = datos[clave]);
+        db.siguienteHerramienta = Number(datos.siguienteHerramienta) || 10;
+        db.siguienteMovimiento = Number(datos.siguienteMovimiento) || 1;
+        db.ultimoRecuento = datos.ultimoRecuento || null;
+
+        guardarDatos();
+        renderTodo();
+        avisar("Respaldo importado correctamente.");
+      } catch (error) {
+        avisar("No se pudo importar el respaldo: " + error.message);
+      }
+
+      evento.target.value = "";
+    });
+  }
+
+  // Recuento físico cada 30 días: el estado se calcula con fechas reales.
+  function actualizarRecuento() {
+    const ultimo = db.ultimoRecuento ? new Date(db.ultimoRecuento) : null;
+    const proximo = ultimo ? new Date(ultimo.getTime() + 30 * 86400000) : null;
+
+    if ($("ultimoRecuento")) {
+      $("ultimoRecuento").textContent = ultimo
+        ? ultimo.toLocaleDateString("es-AR")
+        : "Todavía no realizado";
+    }
+
+    if ($("fechaProximoRecuento")) {
+      $("fechaProximoRecuento").textContent = proximo
+        ? proximo.toLocaleDateString("es-AR")
+        : "Pendiente del primer recuento";
+    }
+
+    if ($("proximoRecuentoHerramientas")) {
+      $("proximoRecuentoHerramientas").textContent = proximo
+        ? proximo.toLocaleDateString("es-AR")
+        : "Pendiente";
+    }
+  }
+
+  if ($("btnIniciarRecuento")) {
+    $("btnIniciarRecuento").addEventListener("click", () => {
+      if ($("recuentoPanel")) $("recuentoPanel").hidden = false;
+      renderRecuento();
+    });
+  }
+
+  function renderRecuento() {
+    pintarTabla("tablaRecuento", db.herramientas, [
+      h => h.codigo,
+      h => h.nombre,
+      h => h.cantidad,
+      h => h.estado
+    ]);
+  }
+
+  if ($("btnRegistrarRecuento")) {
+    $("btnRegistrarRecuento").addEventListener("click", () => {
+      db.ultimoRecuento = new Date().toISOString();
+      db.recuentos.push({
+        fecha: db.ultimoRecuento,
+        cantidadesRegistradas: db.herramientas.length
+      });
+
+      registrarHistorial("Recuento",
+        "Recuento físico registrado. Herramientas catalogadas: " +
+        db.herramientas.length);
+
+      guardarDatos();
+      actualizarRecuento();
+      avisar("Fecha del recuento registrada. Verificá físicamente las cantidades antes de confirmarlas.");
+    });
+  }
+
+  // Renderizado conjunto.
+  function renderTodo() {
+    renderAlumnos();
+    renderProfesores();
+    renderHerramientas();
+    renderHistorial();
+    renderSelectHerramientas();
+    renderRecuento();
+    actualizarRecuento();
+    actualizarEstadoGeneral();
+  }
+
+  renderTodo();
+
+  window.PANOL_UTILS.renderTodo = renderTodo;
+  window.PANOL_UTILS.renderHerramientas = renderHerramientas;
+  window.PANOL_UTILS.renderSelectHerramientas = renderSelectHerramientas;
+
+})();
+</script>
+
+<!-- FIN PARTE 7B -->
